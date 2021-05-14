@@ -1,50 +1,53 @@
 const $ = window.$;
+const fetch = window.fetch;
 let amenityNamesList = [];
 let amenityIdList = [];
 // Wrapper for waiting page to complete loading.
 document.onreadystatechange = function () {
-  if (document.readyState === 'complete') {
+	if (document.readyState === 'complete') {
 
-    // Amenities Checkbox list display - - - - - - - - - - - - - - - - - - - - - - - |
-	// If any checkbox is clicked
-	$('input[type="checkbox"]').click(function () {
-	  // Get the current checkbox being clicked.
-	  let box = $(this);
-	  if (box.is(':checked')) {
-		// Populate amenity name list
-		amenityNamesList.push(box.data('name'));
-		// Populate amenity id list
-		amenityIdList.push(box.data('id'));
-		// box.parent().css("color", "#00ff00");
-	  } else {
-		// box.parent().css("color", "#484848");
-		amenityNamesList = amenityNamesList.filter(function (value, index, arr) {
-		  return value !== box.data('name');
-		  //	return value !== box.next('span').text();
+		// Amenities Checkbox list display - - - - - - - - - - - - - - - - - - - - - - - |
+		// If any checkbox is clicked
+		$('input[type="checkbox"]').click(function () {
+			// Get the current checkbox being clicked.
+			let box = $(this);
+			if (box.is(':checked')) {
+				// Populate amenity name list
+				amenityNamesList.push(box.data('name'));
+				// Populate amenity id list
+				amenityIdList.push(box.data('id'));
+				// box.parent().css("color", "#00ff00");
+			} else {
+				// box.parent().css("color", "#484848");
+				amenityNamesList = amenityNamesList.filter(function (value, index, arr) {
+					return value !== box.data('name');
+					//	return value !== box.next('span').text();
+				});
+				amenityIdList = amenityIdList.filter(function (value, index, arr) {
+					return value !== box.data('id');
+					//	return value !== box.next('span').text();
+				});
+			}
+			console.log(amenityIdList);
+			$('.amenities h4').text(amenityNamesList.join(', '));
 		});
-		amenityIdList = amenityIdList.filter(function (value, index, arr) {
-		  return value !== box.data('id');
-		  //	return value !== box.next('span').text();
-		});
-	  }
-	  console.log(amenityIdList);
-	  $('.amenities h4').text(amenityNamesList.join(', '));
-	});
 
-    // Status light display - - - - - - - - - - - - - - - - - - - - - - - - - - |
-    const url = 'http://0.0.0.0:5001/api/v1/status';
-    $.getJSON(url, function (data, status) {
-      if (data.status === 'OK') {
-        $('#api_status').addClass('amenities');
-      }
-    });
-  }
+		// Status light display - - - - - - - - - - - - - - - - - - - - - - - - - - |
+		async function statusResponse(url) {
+			const response = await fetch(url);
+			const dict = await response.json();
+			if (dict.status === 'OK'){
+				$('#api_status').removeClass('unavailable');
+				$('#api_status').addClass('available');
+				console.log('OOK');
+			} else {
+				$('#api_status').removeClass('available');
+				$('#api_status').addClass('unavailable');
+				console.log('No OOK');
+			}
+		}
+		url = 'http://0.0.0.0:5001/api/v1/status';
+		statusResponse(url);
+		setInterval(statusResponse, 10000, url);
+	}
 };
-
-
-
-
-
-
-
-
