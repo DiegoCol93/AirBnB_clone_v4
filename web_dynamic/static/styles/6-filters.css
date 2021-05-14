@@ -78,9 +78,17 @@ button:hover {
     margin: 0px;
 }
 
+/* Set 10px space between chekcbox and text*/
 .amenities .popover ul li span{
     position: relative;
     left: 10px;
+}
+
+/* Elipsis */
+.amenities h4 {
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .locations .popover {
