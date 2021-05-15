@@ -28,7 +28,7 @@ document.onreadystatechange = function () {
 					//	return value !== box.next('span').text();
 				});
 			}
-			console.log(amenityIdList);
+			//console.log(amenityIdList);
 			$('.amenities h4').text(amenityNamesList.join(', '));
 		});
 
@@ -39,15 +39,13 @@ document.onreadystatechange = function () {
 			if (dict.status === 'OK'){
 				$('#api_status').removeClass('unavailable');
 				$('#api_status').addClass('available');
-				console.log('OOK');
 			} else {
 				$('#api_status').removeClass('available');
 				$('#api_status').addClass('unavailable');
-				console.log('No OOK');
 			}
 		}
 		url = 'http://0.0.0.0:5001/api/v1/status';
 		statusResponse(url);
-		setInterval(statusResponse, 10000, url);
+		//setInterval(statusResponse, 10000, url);
 	}
 };
