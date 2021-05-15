@@ -65,51 +65,46 @@ document.onreadystatechange = function () {
           let outterDiv = d.createElement('DIV');
           let placeNameH2 = d.createElement('H2');
           let innerDiv = d.createElement('DIV');
-          let txtNode = d.createTextNode(place.name);
-          placeNameH2.appendChild(txtNode);
-          txtNode = d.createTextNode(place.price_by_night);
-          innerDiv.appendChild(txtNode);
+          placeNameH2.appendChild(d.createTextNode(place.name));
+          innerDiv.appendChild(d.createTextNode('$'+place.price_by_night));
           outterDiv.appendChild(placeNameH2);
           outterDiv.appendChild(innerDiv);
           articleNode.appendChild(outterDiv);
           outterDiv.classList.add('title_box');
           innerDiv.classList.add('price_by_night');
           // end of first div
-          $('.places')[0].appendChild(articleNode);
+          
+
           // Information div
-          outterDiv = createElement('DIV');
-          innerDiv = createElement('DIV');
+          outterDiv = d.createElement('DIV');
+          innerDiv = d.createElement('DIV');
           innerDiv.classList.add('max_guest');
-          innerDiv.appendChild(place.max_guest);
+          const guest = place.max_guest !== 1 ? "Guests" : "Guest";
+          innerDiv.appendChild(d.createTextNode(guest+' '+place.max_guest));
           outterDiv.appendChild(innerDiv);
 
-          innerDiv = createElement('DIV');
+          innerDiv = d.createElement('DIV');
           innerDiv.classList.add('number_rooms');
-          innerDiv.appendChild(place.numer_rooms);
+          const room = place.max_guest !== 1 ? "Rooms" : "Room";
+          innerDiv.appendChild(d.createTextNode(room+' '+place.number_rooms));
           outterDiv.appendChild(innerDiv);
 
-          innerDiv = createElement('DIV');
+          innerDiv = d.createElement('DIV');
           innerDiv.classList.add('number_bathrooms');
-          innerDiv.appendChild(place.numer_bathrooms);
+          const bathroom = place.max_guest !== 1 ? "Bathrooms" : "Bathroom";
+          innerDiv.appendChild(d.createTextNode(bathroom+' '+place.number_bathrooms));
           outterDiv.appendChild(innerDiv);
 
           outterDiv.classList.add('information');
           articleNode.appendChild(outterDiv);
           
-          // information end
-
-          // User div
-          outterDiv = createElement('DIV');
-          const b = createElement('B');
-          txtNode = createTextNode('Owner:');
-          b.appendChild(txtNode);
-          outterDiv.appendChild(b);
-          txtNode = createTextNode(place.user.first_name);
-          outterDiv.appendChild(txtNode);
-
+          // Description div
+          outterDiv = d.createElement('DIV');
+          outterDiv.classList.add('description');
+          outterDiv.insertAdjacentHTML( "beforeend", place.description);
           articleNode.appendChild(outterDiv);
-          
-
+       
+          $('.places')[0].appendChild(articleNode);
 
         });
       },
