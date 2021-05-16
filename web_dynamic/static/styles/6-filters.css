@@ -44,6 +44,8 @@
 }
 
 .filters ul{
+    padding-left: 25px;
+    margin-left: 0;
     list-style: none;
 }
 
@@ -68,11 +70,12 @@
     background-color: #FAFAFA;
     border: solid 1px #DDDDDD;
     border-radius: 4px;
-    padding-top: 10%;
-    padding-bottom: 2%;
+    padding-top: 1px;
+    padding-bottom: 1px;
     overflow-y: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+    min-height: 300px;
     max-height: 300px;
     z-index: 1;
 }
@@ -89,7 +92,8 @@
 .locations .popover h2{
     margin: 0;
     padding: 0;
-    padding-left: 10%;
+    padding-top: 3%;
+    padding-left: 3%;
 }
 
 .locations .popover > li{
@@ -97,7 +101,8 @@
 }
 
 .locations .popover li li{
-    padding-top: 4%;
+    padding-left: 5%;
+    padding-top: 5%;
 }
 
 /*-------------------- Amenities filter styling --------------------*/
@@ -118,11 +123,12 @@
     background-color: #FAFAFA;
     border: solid 1px #DDDDDD;
     border-radius: 4px;
-    padding-bottom: 14%;
-    padding-top: 8%;
+    padding-bottom: 1px;
+    padding-top: 1px;
     overflow-y: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+    min-height: 300px;
     max-height: 300px;
     z-index: 1;
 }
@@ -140,15 +146,20 @@
     padding-top: 2%;
 }
 
-/* Set 10px space between chekcbox and text*/
-.amenities .popover ul li span{
-    position: relative;
-    left: 10px;
-}
-
 /* Elipsis */
 .amenities h4 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+/*--------------- Set appropiate spacing from checkbox. ---------------*/
+input[type="checkbox" i] {
+    margin-right: 10px;
+}
+
+/* /\* Set 10px space between chekcbox and text*\/ */
+/* .amenities .popover ul li span{ */
+/*     position: relative; */
+/*     left: 10px; */
+/* } */
