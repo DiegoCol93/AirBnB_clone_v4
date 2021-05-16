@@ -1,8 +1,15 @@
 const $ = window.$;
 const d = document;
+const fetch = window.fetch;
+
 let amenityIdList = [];
 let amenityNamesList = [];
-const fetch = window.fetch;
+
+let cityIdList = [];
+let stateIdList = [];
+
+let stateCityNamesList = [];
+
 // const urlBase = 'http://0.0.0.0:5001/api/v1';
 const urlBase = 'http://127.0.0.1:5001/api/v1';
 
@@ -89,8 +96,8 @@ function getPlaceData (url, filters, successCallBack) {
 // Wrapper for waiting page to complete loading. - - - - - - - - - - - - - - - - - - - |
 document.onreadystatechange = function () {
   if (document.readyState === 'complete') {
-    // If any checkbox is clicked
-    $('input[type="checkbox"]').click(function () {
+    // Amenitites onClick. - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+    $('DIV.amenities input[type="checkbox"]').click(function () {
       // Get the current checkbox being clicked.
       const box = $(this);
       if (box.is(':checked')) {
@@ -114,6 +121,56 @@ document.onreadystatechange = function () {
       $('.amenities h4').text(amenityNamesList.join(', '));
     });
 
+    // States onClick. - - - - - - - - - - - - - - - - - - - - - - - - - - |
+    $('DIV.locations h2 input[type="checkbox"]').click(function () {
+      // Get the current checkbox being clicked.
+      const box = $(this);
+      if (box.is(':checked')) {
+        // Populate amenity name list
+        stateCityNamesList.push(box.data('name'));
+        // Populate amenity id list
+        stateIdList.push(box.data('id'));
+        // box.parent().css("color", "#00ff00");
+      } else {
+        // box.parent().css("color", "#484848");
+        stateCityNamesList = stateCityNamesList.filter(function (value, index, arr) {
+          return value !== box.data('name');
+          // return value !== box.next('span').text();
+        });
+        stateIdList = stateIdList.filter(function (value, index, arr) {
+          return value !== box.data('id');
+          // return value !== box.next('span').text();
+        });
+      }
+      // console.log(amenityIdList);
+      $('.locations h4').text(stateCityNamesList.join(', '));
+    });
+
+    // Cities onClick. - - - - - - - - - - - - - - - - - - - - - - - - - - |
+    $('DIV.locations li li input[type="checkbox"]').click(function () {
+      // Get the current checkbox being clicked.
+      const box = $(this);
+      if (box.is(':checked')) {
+        // Populate amenity name list
+        stateCityNamesList.push(box.data('name'));
+        // Populate amenity id list
+        cityIdList.push(box.data('id'));
+        // box.parent().css("color", "#00ff00");
+      } else {
+        // box.parent().css("color", "#484848");
+        stateCityNamesList = stateCityNamesList.filter(function (value, index, arr) {
+          return value !== box.data('name');
+          // return value !== box.next('span').text();
+        });
+        cityIdList = cityIdList.filter(function (value, index, arr) {
+          return value !== box.data('id');
+          // return value !== box.next('span').text();
+        });
+      }
+      // console.log(amenityIdList);
+      $('.locations h4').text(stateCityNamesList.join(', '));
+    });
+
     // Status light display call - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
     statusResponse(urlBase + '/status');
     // setInterval(statusResponse, 10000, url);
@@ -124,7 +181,7 @@ document.onreadystatechange = function () {
     // On click event on search button action. - - - - - - - - - - - - - - - - - - - - - |
     $('button').on('click', function () {
       $('.places').empty();
-      getPlaceData('', { amenities: amenityIdList }, populatePlaces);
+      getPlaceData('', { amenities: amenityIdList, cities: cityIdList, states: stateIdList }, populatePlaces);
     });
   }
 };

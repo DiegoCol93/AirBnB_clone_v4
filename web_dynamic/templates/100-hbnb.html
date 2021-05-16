@@ -19,41 +19,39 @@
     </header>
     <div class="container">
       <section class="filters">
-	<div class="locations">
-	  <h3>States</h3>
-	  <h4>&nbsp;</h4>
-	  <div class="popover">
-	    <ul>
-	      {% for state in states %}
-	      <li>
-		<h2><INPUT type="checkbox" data-id="a" data-name="a"/>{{ state[0].name }}:</h2>
-		<ul>
-		  {% for city in state[1] %}
-		  <li><INPUT type="checkbox" data-id="a" data-name="a"/>{{ city.name }}</li>
-		  {% endfor %}
-		</ul>
-	      </li>
-	      {% endfor %}
-	    </ul>
-	  </div>
-	</div>
-	<div class="amenities">
-	  <h3>Amenities</h3>
-	  <h4>&nbsp;</h4>
-	  <div class="popover">
-	    <ul>
-	      {% for amenity in amenities %}
-			<li><INPUT type="checkbox" data-id="{{ amenity.id }}" data-name="{{ amenity.name }}"/><span>{{ amenity.name }}</span></li>
-	      {% endfor %}
-	    </ul>
-	  </div>
-	</div>
-	<button type="button">Search</button>
+	    <div class="locations">
+	      <h3>States</h3>
+	      <h4>&nbsp;</h4>
+	      <div class="popover">
+	        <ul>
+	          {% for state in states %}
+	            <li><h2><INPUT type="checkbox" data-id="{{ state[0].id }}" data-name="{{ state[0].name }}"/>{{ state[0].name }}:</h2>
+		        <ul>
+		          {% for city in state[1] %}
+		            <li><INPUT type="checkbox" data-id="{{ city.id }}" data-name="{{ city.name }}"/>{{ city.name }}</li>
+		          {% endfor %}
+		        </ul>
+	          </li>
+	          {% endfor %}
+	        </ul>
+	      </div>
+	    </div>
+	    <div class="amenities">
+	      <h3>Amenities</h3>
+	      <h4>&nbsp;</h4>
+	      <div class="popover">
+	        <ul>
+	          {% for amenity in amenities %}
+			  <li><INPUT type="checkbox" data-id="{{ amenity.id }}" data-name="{{ amenity.name }}"/><span>{{ amenity.name }}</span></li>
+	          {% endfor %}
+	        </ul>
+	      </div>
+	    </div>
+	    <button type="button">Search</button>
       </section>
       <div class="placesh1"><h1>Places</h1></div>
       <section class="places">
-	<!-- <h1>Places</h1> -->
-	
+	    <!-- <h1>Places</h1> -->
       </section>
     </div>
     <footer>

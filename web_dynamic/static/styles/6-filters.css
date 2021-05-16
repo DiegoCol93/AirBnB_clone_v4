@@ -105,6 +105,13 @@
     padding-top: 5%;
 }
 
+/* Elipsis */
+.locations h4 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /*-------------------- Amenities filter styling --------------------*/
 .filters .amenities {
     height: 100%;
