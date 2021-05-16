@@ -11,7 +11,7 @@ let stateIdList = [];
 let stateCityNamesList = [];
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June',
-                'July', 'August', 'September', 'October', 'November', 'December'];
+  'July', 'August', 'September', 'October', 'November', 'December'];
 
 // const urlBase = 'http://0.0.0.0:5001/api/v1';
 const urlBase = 'http://localhost:5001/api/v1';
@@ -29,25 +29,40 @@ async function statusResponse (url) {
   }
 }
 
+// Ordinal day
+const ord = function (d) {
+  if (d > 3 && d < 21) return 'th';
+  switch (d % 10) {
+    case 1: return 'st';
+    case 2: return 'nd';
+    case 3: return 'rd';
+    default: return 'th';
+  }
+};
+
 // Populates the reviews inside the places.- - - - - - - - - - - - - - - - - - - - - - |
 function populateReviews (data, placeId) {
+  let count = 0;
   data.forEach(review => {
     const li = d.createElement('LI');
     const h3 = d.createElement('H3');
     const p = d.createElement('P');
+    count++;
 
     const url = urlBase + '/users/' + review.user_id;
 
-    const userData = $.getJSON(url, userData => {
+    $.getJSON(url, userData => {
       const date = new Date(userData.created_at);
-      const dateString = date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
+      const dateString = date.getDate() + ord(date) + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
       h3.appendChild(d.createTextNode('From ' + userData.first_name + ' the ' + dateString));
-      p.appendChild(d.createTextNode(review.text));
+      // p.appendChild(d.createTextNode(review.text));
+      p.insertAdjacentHTML('beforeend', review.text);
       li.appendChild(h3);
       li.appendChild(p);
-      $('article[data-id='+ placeId +'] .reviews UL').append(li);
+      $('article[data-id=' + placeId + '] .reviews UL').append(li);
     });
   });
+  $('article[data-id=' + placeId + '] .reviews H2').prepend(count + ' ');
 }
 
 // Populates the place elements - - - - - - - - - - - - - - - - - - - - - - - - - - - |
@@ -124,7 +139,7 @@ function getReviewData (placeId, successCallBack) {
   $.ajax({
     url: urlBase + '/places/' + placeId + '/reviews',
     crossDomain: true,
-    success: function(data){ successCallBack(data, placeId); },
+    success: function (data) { successCallBack(data, placeId); },
     error: function () {
       console.log('Cannot get data');
     }
@@ -238,9 +253,9 @@ document.onreadystatechange = function () {
       getPlaceData('', { amenities: amenityIdList, cities: cityIdList, states: stateIdList }, populatePlaces);
     });
 
-    $('.places').on('click', '.showReviews', function() {
+    $('.places').on('click', '.showReviews', function () {
       const span = $(this);
-      const placeReviewId= span.closest('article').attr('data-id');
+      const placeReviewId = span.closest('article').attr('data-id');
 
       if (span.text() === 'show') {
         span.text('hide');
@@ -249,7 +264,8 @@ document.onreadystatechange = function () {
       } else {
         span.css('color', '#484848');
         span.text('show');
-        $('article[data-id='+ placeReviewId +'] .reviews UL').empty();
+        $('article[data-id=' + placeReviewId + '] .reviews UL').empty();
+        $('article[data-id=' + placeReviewId + '] .reviews H2').html('Reviews: <span class="showReviews">show</span>');
       }
     });
   }
