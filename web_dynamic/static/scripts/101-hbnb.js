@@ -10,8 +10,11 @@ let stateIdList = [];
 
 let stateCityNamesList = [];
 
+const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'];
+
 // const urlBase = 'http://0.0.0.0:5001/api/v1';
-const urlBase = 'http://127.0.0.1:5001/api/v1';
+const urlBase = 'http://localhost:5001/api/v1';
 
 // Status response api fetch. - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
 async function statusResponse (url) {
@@ -27,18 +30,23 @@ async function statusResponse (url) {
 }
 
 // Populates the reviews inside the places.- - - - - - - - - - - - - - - - - - - - - - |
-function populateReviews (data, reviews) {
+function populateReviews (data, placeId) {
   data.forEach(review => {
     const li = d.createElement('LI');
     const h3 = d.createElement('H3');
     const p = d.createElement('P');
 
-    h3.appendChild(d.createTextNode('From ' + review.user_id));
-    h3.appendChild(d.createTextNode('From'));
-    p.appendChild(d.createTextNode(review.text));
-    li.appendChild(h3);
-    li.appendChild(p);
-    reviews.append(li);
+    const url = urlBase + '/users/' + review.user_id;
+
+    const userData = $.getJSON(url, userData => {
+      const date = new Date(userData.created_at);
+      const dateString = date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
+      h3.appendChild(d.createTextNode('From ' + userData.first_name + ' the ' + dateString));
+      p.appendChild(d.createTextNode(review.text));
+      li.appendChild(h3);
+      li.appendChild(p);
+      $('article[data-id='+ placeId +'] .reviews UL').append(li);
+    });
   });
 }
 
@@ -116,7 +124,7 @@ function getReviewData (placeId, successCallBack) {
   $.ajax({
     url: urlBase + '/places/' + placeId + '/reviews',
     crossDomain: true,
-    success: successCallBack,
+    success: function(data){ successCallBack(data, placeId); },
     error: function () {
       console.log('Cannot get data');
     }
@@ -231,8 +239,18 @@ document.onreadystatechange = function () {
     });
 
     $('.places').on('click', '.showReviews', function() {
-      const placeReviewId= $(this).closest('article').attr('data-id');
-      getReviewData(placeReviewId, populateReviews, $(this));
+      const span = $(this);
+      const placeReviewId= span.closest('article').attr('data-id');
+
+      if (span.text() === 'show') {
+        span.text('hide');
+        span.css('color', '#FF5A5F');
+        getReviewData(placeReviewId, populateReviews);
+      } else {
+        span.css('color', '#484848');
+        span.text('show');
+        $('article[data-id='+ placeReviewId +'] .reviews UL').empty();
+      }
     });
   }
 };
