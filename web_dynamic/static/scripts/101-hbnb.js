@@ -27,7 +27,7 @@ async function statusResponse (url) {
 }
 
 // Populates the reviews inside the places.- - - - - - - - - - - - - - - - - - - - - - |
-function populateReviews (data) {
+function populateReviews (data, reviews) {
   data.forEach(review => {
     const li = d.createElement('LI');
     const h3 = d.createElement('H3');
@@ -38,7 +38,7 @@ function populateReviews (data) {
     p.appendChild(d.createTextNode(review.text));
     li.appendChild(h3);
     li.appendChild(p);
-    $('.reviews UL').append(li);
+    reviews.append(li);
   });
 }
 
@@ -108,9 +108,6 @@ function populatePlaces (data) {
     articleNode.setAttribute('data-id', place.id);
 
     $('.places')[0].appendChild(articleNode);
-    $('.showReviews').click(function () {
-      console.log('HOLA');
-    });
   });
 }
 
@@ -233,9 +230,9 @@ document.onreadystatechange = function () {
       getPlaceData('', { amenities: amenityIdList, cities: cityIdList, states: stateIdList }, populatePlaces);
     });
 
-    // // d.getElementById('showReviews').addEventListener('click', function () {
-    // //   console.log("HOLA");
-    // // });
-    // $('.container .places ').css('color','#00FF00');
+    $('.places').on('click', '.showReviews', function() {
+      const placeReviewId= $(this).closest('article').attr('data-id');
+      getReviewData(placeReviewId, populateReviews, $(this));
+    });
   }
 };
